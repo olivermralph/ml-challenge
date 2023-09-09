@@ -135,11 +135,11 @@ if __name__ == '__main__':
     model_path = contents["paths"]["model_path"]
 
     torch.manual_seed(0)
-    trainset = set_dataset(data_path, train=True, download=False)
+    trainset = set_dataset(data_path, train=True, download=True)
     trainloader = set_dataloader(trainset, batch_size, 
                                             shuffle=True, num_workers=2, drop_last=True)
 
-    testset = set_dataset(data_path, train=False, download=False)
+    testset = set_dataset(data_path, train=False, download=True)
     testloader = set_dataloader(testset, batch_size,
                                             shuffle=False, num_workers=2, drop_last=True)
 
