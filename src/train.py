@@ -113,11 +113,15 @@ def calculate_accuracy_per_class():
         print(f'Accuracy for class: {classname:5s} is {accuracy:.1f} %')
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description="Parser for config file for remaining arguments")
+    parser = argparse.ArgumentParser(description="Parser for model architecture and config file for remaining arguments")
 
     parser.add_argument("--config_file",
                         required=True,
                         help="Location of config file to parse reamining arguments")
+    parser.add_argument("--model_architecture",
+                        default="resnet18",
+                        choices=["resnet18", "resnet34", "resnet50"],
+                        help="Select model architecture for model training (dsefault='resnet18')")
     args = parser.parse_args()
  
     f = open(args.config_file)
@@ -126,7 +130,7 @@ if __name__ == '__main__':
 
     batch_size = int(contents["params"]["batch_size"])
     epochs = int(contents["params"]["epochs"])
-    model_architecture = contents["params"]["model_architecture"]
+    model_architecture = args.model_architecture
     data_path = contents["paths"]["data_path"]
     model_path = contents["paths"]["model_path"]
 
