@@ -1,3 +1,5 @@
+import argparse
+import json
 import torch
 import torchvision
 import torchvision.transforms as transforms
@@ -79,7 +81,7 @@ def test_model():
         for data in testloader:
             images, labels = data
             # calculate outputs by running images through the network
-            outputs = model(images)
+            outputs = model_to_test(images)
             # the class with the highest energy is what we choose as prediction
             _, predicted = torch.max(outputs.data, 1)
             total += labels.size(0)
@@ -96,7 +98,7 @@ def calculate_accuracy_per_class():
     with torch.no_grad():
         for data in testloader:
             images, labels = data
-            outputs = model(images)
+            outputs = model_to_test(images)
             _, predictions = torch.max(outputs, 1)
             # collect the correct predictions for each class
             for label, prediction in zip(labels, predictions):
@@ -111,12 +113,26 @@ def calculate_accuracy_per_class():
         print(f'Accuracy for class: {classname:5s} is {accuracy:.1f} %')
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description="Parser for model architecture and config file for remaining arguments")
+
+    parser.add_argument("--config_file",
+                        required=True,
+                        help="Location of config file to parse reamining arguments")
+    parser.add_argument("--model_architecture",
+                        default="resnet18",
+                        choices=["resnet18", "resnet34", "resnet50"],
+                        help="Select model architecture for model training (dsefault='resnet18')")
+    args = parser.parse_args()
+ 
+    f = open(args.config_file)
     
-    batch_size = 128
-    epochs = 2
-    data_path = './data'
-    model_path = './fashion_mnist_model.pth'
-    model_architecture = "resnet18"
+    contents = json.load(f)
+
+    batch_size = int(contents["params"]["batch_size"])
+    epochs = int(contents["params"]["epochs"])
+    model_architecture = args.model_architecture
+    data_path = contents["paths"]["data_path"]
+    model_path = contents["paths"]["model_path"]
 
     torch.manual_seed(0)
     trainset = set_dataset(data_path, train=True, download=False)
@@ -137,7 +153,10 @@ if __name__ == '__main__':
     save_model(model_path)
 
     model_to_test = set_model(model_architecture)
-    model.load_state_dict(torch.load(model_path))
+    model_to_test.load_state_dict(torch.load(model_path))
+
+    test_model()
+    calculate_accuracy_per_class()
 
 
 
