@@ -118,7 +118,7 @@ if __name__ == '__main__':
     model_path = './fashion_mnist_model.pth'
     model_architecture = "resnet18"
 
-    # TODO: Add seed
+    torch.manual_seed(0)
     trainset = set_dataset(data_path, train=True, download=False)
     trainloader = set_dataloader(trainset, batch_size, 
                                             shuffle=True, num_workers=2, drop_last=True)
