@@ -1,0 +1,7 @@
+name: deep_learning
+dependencies:
+- pip==23.2.1
+- pip:
+    --index-url https://download.pytorch.org/whl/cu117
+    - torch==2.0.1
+    - torcvhvision==0.15.2
