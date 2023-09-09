@@ -164,3 +164,7 @@ data/
 
 # Models
 *.pth
+
+# VSCode
+launch.json
+.vscode
