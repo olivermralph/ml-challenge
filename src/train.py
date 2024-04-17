@@ -132,7 +132,7 @@ if __name__ == '__main__':
                         default="resnet18",
                         choices=["resnet18", "resnet34", "resnet50"],
                         help="Select model architecture for model training (default='resnet18')")
-    parser.add_argument("--device",
+    parser.add_argument("--compute_type",
                     default="gpu",
                     choices=["gpu", "cpu"],
                     help="Select 'gpu' or 'cpu' to train the model on (default='gpu')")
