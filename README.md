@@ -7,7 +7,7 @@ This code is used to train a model to classify grayscale images from the Fashion
 The best model that I have trained so far had the following parameters:  
 `"batch_size": 128`  
 `"epochs": 10`  
-`"model_architecture": "resnet18"`  
+`"model_architecture": "resnet34"`  
 `"compute_type": "gpu"`  
 
 The printout is as follows:  
