@@ -135,7 +135,7 @@ if __name__ == '__main__':
     model_path = contents["paths"]["model_path"]
 
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
-    print(device)
+    print("device:", device)
     
     torch.manual_seed(0)
     trainset = set_dataset(data_path, train=True, download=True)
