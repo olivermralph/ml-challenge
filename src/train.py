@@ -33,13 +33,13 @@ def set_dataloader(dataset, batch_size, shuffle, num_workers, drop_last):
                                           shuffle=shuffle, num_workers=num_workers, drop_last=drop_last)
 
 def set_model(model_architecture):
-    model = MODEL_ARCHITECTURES[model_architecture]
+    model = MODEL_ARCHITECTURES[model_architecture].to(device)
 
     # Convert model to grayscale
-    model.conv1 = torch.nn.Conv2d(1, 64, kernel_size=7, stride=2, padding=3, bias=False)
+    model.conv1 = torch.nn.Conv2d(1, 64, kernel_size=7, stride=2, padding=3, bias=False).to(device)
 
     # Update the fully connected layer based on the number of classes in the dataset
-    model.fc = torch.nn.Linear(model.fc.in_features, len(CLASSES))
+    model.fc = torch.nn.Linear(model.fc.in_features, len(CLASSES)).to(device)
 
     return model
 
@@ -49,7 +49,7 @@ def train_model(epochs):
         running_loss = 0.0
         for i, data in enumerate(trainloader, 0):
             # get the inputs; data is a list of [inputs, labels]
-            inputs, labels = data
+            inputs, labels = data[0].to(device), data[1].to(device)
 
             # zero the parameter gradients
             optimizer.zero_grad()
@@ -79,7 +79,7 @@ def test_model():
     # since we're not training, we don't need to calculate the gradients for our outputs
     with torch.no_grad():
         for data in testloader:
-            images, labels = data
+            images, labels = data[0].to(device), data[1].to(device)
             # calculate outputs by running images through the network
             outputs = model_to_test(images)
             # the class with the highest energy is what we choose as prediction
@@ -97,7 +97,7 @@ def calculate_accuracy_per_class():
     # again no gradients needed
     with torch.no_grad():
         for data in testloader:
-            images, labels = data
+            images, labels = data[0].to(device), data[1].to(device)
             outputs = model_to_test(images)
             _, predictions = torch.max(outputs, 1)
             # collect the correct predictions for each class
@@ -134,6 +134,9 @@ if __name__ == '__main__':
     data_path = contents["paths"]["data_path"]
     model_path = contents["paths"]["model_path"]
 
+    device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+    print(device)
+    
     torch.manual_seed(0)
     trainset = set_dataset(data_path, train=True, download=True)
     trainloader = set_dataloader(trainset, batch_size, 
