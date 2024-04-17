@@ -16,6 +16,16 @@ MODEL_ARCHITECTURES = {
     "resnet50": resnet50(weights=None)
 }
 
+COMPUTE_TYPES = {
+    "gpu": "cuda:0",
+    "cpu": "cpu"
+}
+
+
+def set_device(device):
+    return torch.device(COMPUTE_TYPES[device] if torch.cuda.is_available() else COMPUTE_TYPES["cpu"])
+
+
 def get_transform():
     return transforms.Compose(
                 [transforms.ToTensor(),
@@ -121,7 +131,11 @@ if __name__ == '__main__':
     parser.add_argument("--model_architecture",
                         default="resnet18",
                         choices=["resnet18", "resnet34", "resnet50"],
-                        help="Select model architecture for model training (dsefault='resnet18')")
+                        help="Select model architecture for model training (default='resnet18')")
+    parser.add_argument("--device",
+                    default="gpu",
+                    choices=["gpu", "cpu"],
+                    help="Select 'gpu' or 'cpu' to train the model on (default='gpu')")
     args = parser.parse_args()
  
     f = open(args.config_file)
@@ -134,7 +148,7 @@ if __name__ == '__main__':
     data_path = contents["paths"]["data_path"]
     model_path = contents["paths"]["model_path"]
 
-    device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+    device = set_device(args.device)
     print("device:", device)
     
     torch.manual_seed(0)
