@@ -1,4 +1,4 @@
-# monolith-ai-challenge
+# ml-challenge
 Train a deep learning model on the fashion-MNIST dataset
 
 ## About
