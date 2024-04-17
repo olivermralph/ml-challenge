@@ -4,7 +4,7 @@ Train a deep learning model on the fashion-MNIST dataset
 ## About
 This code is used to train a model to classify grayscale images from the Fashion-MNIST dataset with an accuracy of 86% on the 10000 test images.
 
-The last printout is as follows:
+The last printout is as follows:  
 `[1,   100] loss: 0.887`  
 `[1,   200] loss: 0.481`  
 `[1,   300] loss: 0.439`  
@@ -44,5 +44,5 @@ There is a config file called `config.json` under the `config` folder which cont
 The model architecture is set as a variable in the command line, rather than in the config file, as there is a limited set of choices, those currently being `"resnet18"`, `"resnet34"` and `"resnet50"`.
 The compute type can be set to `"gpu"` (code will print `cuda:0` if available) or `"cpu"` (code will print `cpu`) in the command line too.
 
-On the command line, run the following with the working directory set as the project folder:
+On the command line, run the following with the working directory set as the project folder:  
 `python src/train.py --config_file="config/config.json" --model_architecture="resnet18" --compute_type="gpu"`
