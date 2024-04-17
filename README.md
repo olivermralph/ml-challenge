@@ -5,10 +5,10 @@ Train a deep learning model on the fashion-MNIST dataset
 This code is used to train a model to classify grayscale images from the Fashion-MNIST dataset with an accuracy of 86% on the 10000 test images.
 
 The best model that I have trained so far had the following parameters:
-`"batch_size": 128`
-`"epochs": 10`
-`"model_architecture": "resnet18"`
-`"compute_type": "gpu"`
+`"batch_size": 128`  
+`"epochs": 10`  
+`"model_architecture": "resnet18"`  
+`"compute_type": "gpu"`  
 
 The printout is as follows:  
 `device: cuda:0`  
