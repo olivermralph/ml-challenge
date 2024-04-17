@@ -148,7 +148,7 @@ if __name__ == '__main__':
     data_path = contents["paths"]["data_path"]
     model_path = contents["paths"]["model_path"]
 
-    device = set_device(args.device)
+    device = set_device(args.compute_type)
     print("device:", device)
     
     torch.manual_seed(0)
