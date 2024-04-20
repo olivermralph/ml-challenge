@@ -6,7 +6,7 @@
     },
     "paths":
     {
-        "data_path": "./data",
+        "data_path": "/home/oralph/repos/fashion-mnist/data/fashion",
         "model_path": "./fashion_mnist_model.pth"
     }
 }
