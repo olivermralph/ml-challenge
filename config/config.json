@@ -1,8 +1,7 @@
 {
     "params":{
         "batch_size": 128,
-        "epochs": 2,
-        "model_architecture": "resnet18"
+        "epochs": 2
     },
     "paths":
     {

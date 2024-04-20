@@ -67,8 +67,12 @@ def set_model(model_architecture):
     return model
 
 
-def train_model(epochs):
+def train_model(model, optimizer, criterion, epochs, train_dataloader, val_dataloader):
     for epoch in range(epochs):  # loop over the dataset multiple times
+
+        # begin training
+        print(f"Training - Epoch {epoch + 1}")
+        model.train()
 
         running_loss = 0.0
         for i, data in enumerate(train_dataloader, 0):
@@ -90,6 +94,10 @@ def train_model(epochs):
                 print(f'[{epoch + 1}, {i + 1:5d}] loss: {running_loss / 100:.3f}')
                 running_loss = 0.0
 
+        print(f"Validation - Epoch {epoch + 1}")
+        test_model(model, val_dataloader)
+        calculate_accuracy_per_class(model, val_dataloader)
+
     print('Finished Training')
 
 
@@ -97,33 +105,39 @@ def save_model(model_path):
     torch.save(model.state_dict(), model_path)
 
 
-def test_model():
+def test_model(model, dataloader):
+    # begin model evaluation
+    model.eval()
+
     correct = 0
     total = 0
     # since we're not training, we don't need to calculate the gradients for our outputs
     with torch.no_grad():
-        for data in test_dataloader:
+        for data in dataloader:
             images, labels = data[0].to(device), data[1].to(device)
             # calculate outputs by running images through the network
-            outputs = model_to_test(images)
+            outputs = model(images)
             # the class with the highest energy is what we choose as prediction
             _, predicted = torch.max(outputs.data, 1)
             total += labels.size(0)
             correct += (predicted == labels).sum().item()
+    
+    print(f'Accuracy of the network on the dataset: {100 * correct // total} %')
 
-    print(f'Accuracy of the network on the 10000 test images: {100 * correct // total} %')
 
-
-def calculate_accuracy_per_class():
+def calculate_accuracy_per_class(model, dataloader):
+    # begin model evaluation
+    model.eval()
+    
     # prepare to count predictions for each class
     correct_pred = {classname: 0 for classname in CLASSES}
     total_pred = {classname: 0 for classname in CLASSES}
 
     # again no gradients needed
     with torch.no_grad():
-        for data in test_dataloader:
+        for data in dataloader:
             images, labels = data[0].to(device), data[1].to(device)
-            outputs = model_to_test(images)
+            outputs = model(images)
             _, predictions = torch.max(outputs, 1)
             # collect the correct predictions for each class
             for label, prediction in zip(labels, predictions):
@@ -186,15 +200,16 @@ if __name__ == '__main__':
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
 
-    train_model(epochs)
+    train_model(model=model, optimizer=optimizer, criterion=criterion, epochs=epochs, train_dataloader=train_dataloader, val_dataloader=val_dataloader)
 
     save_model(model_path)
 
     model_to_test = set_model(model_architecture)
     model_to_test.load_state_dict(torch.load(model_path))
 
-    test_model()
-    calculate_accuracy_per_class()
+    print("Testing")
+    test_model(model=model_to_test, dataloader=test_dataloader)
+    calculate_accuracy_per_class(model=model_to_test, dataloader=test_dataloader)
 
 
 
