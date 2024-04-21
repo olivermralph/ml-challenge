@@ -6,7 +6,7 @@ The MIT License (MIT) Copyright © 2017 Zalando SE, https://tech.zalando.com
 ## About
 This code is used to train a model to classify grayscale images from the Fashion-MNIST dataset with an accuracy of 86% on the 10000 test images.
 
-The best model that I have trained so far had the following parameters:  
+Here is an example of the output of a model being trained from the python script `train.py`:  
 `"batch_size": 128`  
 `"epochs": 10`  
 `"model_architecture": "resnet34"`  
