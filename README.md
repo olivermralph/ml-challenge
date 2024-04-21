@@ -1,5 +1,7 @@
 # ml-challenge
-Train a deep learning model on the fashion-MNIST dataset
+Train a deep learning model on the fashion-MNIST dataset.  
+The repository that contains the fashion-mnist dataset required to run this code is subject to the following coptyright licence:  
+The MIT License (MIT) Copyright © 2017 Zalando SE, https://tech.zalando.com
 
 ## About
 This code is used to train a model to classify grayscale images from the Fashion-MNIST dataset with an accuracy of 86% on the 10000 test images.
@@ -10,75 +12,91 @@ The best model that I have trained so far had the following parameters:
 `"model_architecture": "resnet34"`  
 `"compute_type": "gpu"`  
 
-The printout is as follows:  
+`The printout is as follows:`   
 `device: cuda:0`  
-`[1,   100] loss: 0.971`  
-`[1,   200] loss: 0.523`  
-`[1,   300] loss: 0.466`  
-`[1,   400] loss: 0.435`  
-`[2,   100] loss: 0.355`  
+`Training - Epoch 1`  
+`[1,   100] loss: 0.948`  
+`[1,   200] loss: 0.520`  
+`[1,   300] loss: 0.470`  
+`[1,   400] loss: 0.430`  
+`Validation - Epoch 1`  
+`Accuracy of the network on the dataset: 87 %`  
+`Accuracy for class: T-shirt/top is 84.4 %`  
+`Accuracy for class: Trouser is 96.6 %`  
+`Accuracy for class: Pullover is 76.6 %`  
+`Accuracy for class: Dress is 89.6 %`  
+`Accuracy for class: Coat  is 83.6 %`  
+`Accuracy for class: Sandal is 93.5 %`  
+`Accuracy for class: Shirt is 64.0 %`  
+`Accuracy for class: Sneaker is 90.0 %`  
+`Accuracy for class: Bag   is 97.8 %`  
+`Accuracy for class: Ankle Boot is 97.0 %`  
+`Training - Epoch 2`  
+`[2,   100] loss: 0.357`  
 `[2,   200] loss: 0.341`  
-`[2,   300] loss: 0.350`  
-`[2,   400] loss: 0.339`  
-`[3,   100] loss: 0.282`  
-`[3,   200] loss: 0.274`  
-`[3,   300] loss: 0.283`  
-`[3,   400] loss: 0.281`  
-`[4,   100] loss: 0.232`  
-`[4,   200] loss: 0.236`  
-`[4,   300] loss: 0.240`  
-`[4,   400] loss: 0.238`  
-`[5,   100] loss: 0.192`  
-`[5,   200] loss: 0.198`  
-`[5,   300] loss: 0.205`  
-`[5,   400] loss: 0.214`  
-`[6,   100] loss: 0.165`  
-`[6,   200] loss: 0.174`  
-`[6,   300] loss: 0.181`  
-`[6,   400] loss: 0.181`  
-`[7,   100] loss: 0.140`  
-`[7,   200] loss: 0.144`  
-`[7,   300] loss: 0.145`  
-`[7,   400] loss: 0.159`  
-`[8,   100] loss: 0.117`  
-`[8,   200] loss: 0.124`  
-`[8,   300] loss: 0.135`  
-`[8,   400] loss: 0.142`  
-`[9,   100] loss: 0.105`  
-`[9,   200] loss: 0.106`  
-`[9,   300] loss: 0.116`  
-`[9,   400] loss: 0.126`  
-`[10,   100] loss: 0.097`  
-`[10,   200] loss: 0.090`  
-`[10,   300] loss: 0.101`  
-`[10,   400] loss: 0.112`  
-`Finished Training`  
-`Accuracy of the network on the 10000 test images: 88 %`  
-`Accuracy for class: T-shirt/top is 81.8 %`  
-`Accuracy for class: Trouser is 97.4 %`  
+`[2,   300] loss: 0.341`  
+`[2,   400] loss: 0.341`  
+`Validation - Epoch 2`  
+`Accuracy of the network on the dataset: 89 %`  
+`Accuracy for class: T-shirt/top is 86.8 %`  
+`Accuracy for class: Trouser is 97.7 %`  
 `Accuracy for class: Pullover is 80.1 %`  
-`Accuracy for class: Dress is 87.8 %`  
-`Accuracy for class: Coat  is 83.8 %`  
-`Accuracy for class: Sandal is 96.1 %`  
-`Accuracy for class: Shirt is 68.1 %`  
-`Accuracy for class: Sneaker is 93.9 %`  
-`Accuracy for class: Bag   is 97.4 %`  
-`Accuracy for class: Ankle Boot is 95.0 %`  
+`Accuracy for class: Dress is 88.3 %`  
+`Accuracy for class: Coat  is 93.4 %`  
+`Accuracy for class: Sandal is 98.0 %`  
+`Accuracy for class: Shirt is 65.3 %`  
+`Accuracy for class: Sneaker is 94.8 %`  
+`Accuracy for class: Bag   is 98.2 %`  
+`Accuracy for class: Ankle Boot is 96.3 %`  
+`Finished Training`  
+`Testing`  
+`Accuracy of the network on the dataset: 86 %`  
+`Accuracy for class: T-shirt/top is 83.7 %`  
+`Accuracy for class: Trouser is 97.0 %`  
+`Accuracy for class: Pullover is 74.1 %`  
+`Accuracy for class: Dress is 83.7 %`  
+`Accuracy for class: Coat  is 88.7 %`  
+`Accuracy for class: Sandal is 96.5 %`  
+`Accuracy for class: Shirt is 55.2 %`  
+`Accuracy for class: Sneaker is 94.2 %`  
+`Accuracy for class: Bag   is 96.9 %`  
+`Accuracy for class: Ankle Boot is 94.4 %`  
 
 The test class accuracy is not always the same and could be due to the shuffling of the training dataset but could also just be the non-determinsm of the model.
-
-There is currently no validation as I ran out of time to add this, but all other requirements have been met.
-
-The time taken to complete this was approximately 6h 30m.
 
 ## How to Run
 You will need to create a conda environement using the definition file that can be found under:
 `"environments/deep_learning/conda_dependencies.yml"`.
 Or alternatively install these libraries on a clean conda/pip environment if you can't use the conda dependencies file.
 
-## Arguments
+You will then need to clone the following repository to access the Fashion-MNIST dataset:  
+https://github.com/zalandoresearch/fashion-mnist  
+This should be adjacent to this repository.
 
-There is a config file called `config.json` under the `config` folder which contain parameters for running training and also paths to the data and output model locations (the data will be downloaded if it isn't already). You will need to call this when you run the training script `src/train.py`.
+In order to access the data from the cloned repo, you need to make sure that the path that is appended to the system (cell 4 in model_train.ipynb and line 15 in train.py) is that of the fashion-mnist repo location,  
+e.g. `'~/repos/fashion-mnist'`
+
+### Arguments
+
+There is a config file called `config.json` under the `config` folder which contain parameters for running training and also paths to the data and output model locations. You will need to call this when you run the training script `src/train.py`.
+
+An example of the config file looks like this:
+
+`{`  
+`    "params":{`  
+`        "batch_size": 128,`  
+`        "epochs": 2`  
+`    },`  
+`    "paths":`  
+`    {`  
+`        "data_path": "~/repos/fashion-mnist/data/fashion",`  
+`        "model_path": "./fashion_mnist_model.pth"`  
+`    }`  
+`}`  
+
+The batch size is applied to training, validation and test.
+
+The `data_path` is the path required to use the dataset, `fashion-mnist/data/fashion` should remain the same regardless of where the data is stored on your machine.
 
 The model architecture is set as a variable in the command line, rather than in the config file, as there is a limited set of choices, those currently being `"resnet18"`, `"resnet34"` and `"resnet50"`.
 The compute type can be set to `"gpu"` (code will print `cuda:0` if available) or `"cpu"` (code will print `cpu`) in the command line too.
