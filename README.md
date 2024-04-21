@@ -6,7 +6,7 @@ The MIT License (MIT) Copyright © 2017 Zalando SE, https://tech.zalando.com
 ## About
 This code is used to train a model to classify grayscale images from the Fashion-MNIST dataset with an accuracy of 86% on the 10000 test images. The train/val dataset split is `0.33` (train dataset: 40200 images, validation dataset: 19800 images). This parameter is not currently configurable.
 
-Here is an example of the output of a model being trained from the python script `train.py`:  
+Here is an example of the output of a model being trained from the python script `src/train.py`:  
 `"batch_size": 128`  
 `"epochs": 2`  
 `"model_architecture": "resnet34"`  
@@ -65,20 +65,23 @@ Here is an example of the output of a model being trained from the python script
 The test class accuracy is not always the same and could be due to the shuffling of the training dataset but could also just be the non-determinsm of the model.
 
 ## How to Run
-You will need to create a conda environement using the definition file that can be found under:
-`"environments/deep_learning/conda_dependencies.yml"`.
-Or alternatively install these libraries on a clean conda/pip environment if you can't use the conda dependencies file.
+### Environment Setup
+You will need a python environment using the requirements file that can be found under:
+`"environments/ml_venv/requirements.txt"`.
+Instructions on how to create a python virtual environment can be found here:  
+https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/  
+Or alternatively install these libraries on a clean python/conda environment if you can't use the requirements file.
 
 You will then need to clone the following repository to access the Fashion-MNIST dataset:  
 https://github.com/zalandoresearch/fashion-mnist  
-This should be adjacent to this repository.
+The local repository location should be adjacent to this repository, but is not essential.
 
 In order to access the data from the cloned repo, you need to make sure that the path that is appended to the system (cell 4 in model_train.ipynb and line 15 in train.py) is that of the fashion-mnist repo location,  
-e.g. `'~/repos/fashion-mnist'`
+e.g. `'/home/<user>/repos/fashion-mnist'`
 
 ### Arguments
 
-There is a config file called `config.json` under the `config` folder which contain parameters for running training and also paths to the data and output model locations. You will need to call this when you run the training script `src/train.py`.
+There is a config file called `config.json` under the `config` folder which contain parameters for running training and also paths to the data and output model locations. You will need to call this in the run command when you run the training script `src/train.py`.
 
 An example of the config file looks like this:
 
@@ -89,17 +92,17 @@ An example of the config file looks like this:
 `    },`  
 `    "paths":`  
 `    {`  
-`        "data_path": "~/repos/fashion-mnist/data/fashion",`  
-`        "model_path": "./fashion_mnist_model.pth"`  
+`        "data_path": "/home/jbloggs/repos/fashion-mnist/data/fashion",`  
+`        "model_path": "/home/jbloggs/repos/ml-challenge/models/fashion_mnist_model.pth"`  
 `    }`  
 `}`  
 
 The batch size is applied to training, validation and test.
 
-The `data_path` is the path required to use the dataset, `fashion-mnist/data/fashion` should remain the same regardless of where the data is stored on your machine.
+The `data_path` is the path required to use the dataset. `fashion-mnist/data/fashion` should remain the same regardless of where the data is stored on your machine.
 
 The model architecture is set as a variable in the command line, rather than in the config file, as there is a limited set of choices, those currently being `"resnet18"`, `"resnet34"` and `"resnet50"`.
-The compute type can be set to `"gpu"` (code will print `cuda:0` if available) or `"cpu"` (code will print `cpu`) in the command line too.
+The compute type can be set to `"gpu"` (code will print `cuda:0` if available and `cpu` if unavailable) or `"cpu"` (code will print `cpu`) in the command line too.
 
 On the command line, run the following with the working directory set as the project folder:  
-`python src/train.py --config_file="config/config.json" --model_architecture="resnet18" --compute_type="gpu"`
+`python src/train.py --config_file="config/config.json" [--model_architecture="resnet18" --compute_type="gpu"]`
