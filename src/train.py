@@ -1,7 +1,6 @@
 import argparse
 import json
 import torch
-import torchvision
 import torchvision.transforms as transforms
 import sys
 
@@ -12,6 +11,7 @@ import torch.optim as optim
 
 from dataset import CustomFashionMNISTDataset
 
+# Set path to import dataset
 sys.path.append("/home/oralph/repos/fashion-mnist")
 
 from utils import mnist_reader
@@ -28,8 +28,11 @@ MODEL_ARCHITECTURES = {
 IMAGE_SHAPE = (28, 28)
 
 TRANSFORM = transforms.Compose(
-                [transforms.ToTensor(),
-                transforms.Normalize((0.5), (0.5))])
+    [
+        transforms.ToTensor(),
+        transforms.Normalize((0.5), (0.5))
+    ]
+)
 
 COMPUTE_TYPES = {
     "gpu": "cuda:0",
@@ -38,7 +41,10 @@ COMPUTE_TYPES = {
 
 
 def set_device(device):
-    return torch.device(COMPUTE_TYPES[device] if torch.cuda.is_available() else COMPUTE_TYPES["cpu"])
+    return torch.device(
+        COMPUTE_TYPES[device] if torch.cuda.is_available()
+        else COMPUTE_TYPES["cpu"]
+    )
 
 
 def load_fashion_mnist_data(data_path):
@@ -52,26 +58,50 @@ def load_fashion_mnist_data(data_path):
 
 
 def set_dataset(images, labels):
-    return CustomFashionMNISTDataset(images=images, labels=labels, image_shape=IMAGE_SHAPE, image_transform=TRANSFORM)
-    
+    return CustomFashionMNISTDataset(
+        images=images,
+        labels=labels,
+        image_shape=IMAGE_SHAPE,
+        image_transform=TRANSFORM
+    )
+
 
 def set_dataloader(dataset, batch_size, shuffle):
-    return torch.utils.data.DataLoader(dataset=dataset, batch_size=batch_size, shuffle=shuffle)
+    return torch.utils.data.DataLoader(
+        dataset=dataset,
+        batch_size=batch_size,
+        shuffle=shuffle
+    )
 
 
 def set_model(model_architecture):
     model = MODEL_ARCHITECTURES[model_architecture].to(device)
 
     # Convert model to grayscale
-    model.conv1 = torch.nn.Conv2d(1, 64, kernel_size=7, stride=2, padding=3, bias=False).to(device)
+    model.conv1 = torch.nn.Conv2d(
+        in_channels=1,
+        out_channels=64,
+        kernel_size=7,
+        stride=2,
+        padding=3,
+        bias=False
+    ).to(device)
 
-    # Update the fully connected layer based on the number of classes in the dataset
+    # Update the fully connected layer based on the number of classes
+    # in the dataset
     model.fc = torch.nn.Linear(model.fc.in_features, len(CLASSES)).to(device)
 
     return model
 
 
-def train_model(model, optimizer, criterion, epochs, train_dataloader, val_dataloader):
+def train_model(
+        model,
+        optimizer,
+        criterion,
+        epochs,
+        train_dataloader,
+        val_dataloader
+):
     for epoch in range(epochs):  # loop over the dataset multiple times
 
         # begin training
@@ -95,7 +125,10 @@ def train_model(model, optimizer, criterion, epochs, train_dataloader, val_datal
             # print statistics
             running_loss += loss.item()
             if i % 100 == 99:    # print every 100 mini-batches
-                print(f'[{epoch + 1}, {i + 1:5d}] loss: {running_loss / 100:.3f}')
+                print(
+                    f'[{epoch + 1}, {i + 1:5d}] \
+                      loss: {running_loss / 100:.3f}'
+                )
                 running_loss = 0.0
 
         print(f"Validation - Epoch {epoch + 1}")
@@ -115,7 +148,8 @@ def test_model(model, dataloader):
 
     correct = 0
     total = 0
-    # since we're not training, we don't need to calculate the gradients for our outputs
+    # since we're not training, we don't need to \
+    # calculate the gradients for our outputs
     with torch.no_grad():
         for data in dataloader:
             images, labels = data[0].to(device), data[1].to(device)
@@ -125,14 +159,17 @@ def test_model(model, dataloader):
             _, predicted = torch.max(outputs.data, 1)
             total += labels.size(0)
             correct += (predicted == labels).sum().item()
-    
-    print(f'Accuracy of the network on the dataset: {100 * correct // total} %')
+
+    print(
+        f'Accuracy of the network on the dataset: \
+          {100 * correct // total} %'
+    )
 
 
 def calculate_accuracy_per_class(model, dataloader):
     # begin model evaluation
     model.eval()
-    
+
     # prepare to count predictions for each class
     correct_pred = {classname: 0 for classname in CLASSES}
     total_pred = {classname: 0 for classname in CLASSES}
@@ -149,7 +186,6 @@ def calculate_accuracy_per_class(model, dataloader):
                     correct_pred[CLASSES[label]] += 1
                 total_pred[CLASSES[label]] += 1
 
-
     # print accuracy for each class
     for classname, correct_count in correct_pred.items():
         accuracy = 100 * float(correct_count) / total_pred[classname]
@@ -157,23 +193,32 @@ def calculate_accuracy_per_class(model, dataloader):
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description="Parser for model architecture and config file for remaining arguments")
+    parser = argparse.ArgumentParser(
+        description="Parser for model architecture \
+            and config file for remaining arguments"
+    )
 
-    parser.add_argument("--config_file",
-                        required=True,
-                        help="Location of config file to parse reamining arguments")
-    parser.add_argument("--model_architecture",
-                        default="resnet18",
-                        choices=["resnet18", "resnet34", "resnet50"],
-                        help="Select model architecture for model training (default='resnet18')")
-    parser.add_argument("--compute_type",
-                    default="gpu",
-                    choices=["gpu", "cpu"],
-                    help="Select 'gpu' or 'cpu' to train the model on (default='gpu')")
+    parser.add_argument(
+        "--config_file",
+        required=True,
+        help="Location of config file to parse reamining arguments"
+    )
+    parser.add_argument(
+        "--model_architecture",
+        default="resnet18",
+        choices=["resnet18", "resnet34", "resnet50"],
+        help="Model architecture for model training (default='resnet18')"
+    )
+    parser.add_argument(
+        "--compute_type",
+        default="gpu",
+        choices=["gpu", "cpu"],
+        help="Train model on 'gpu' or 'cpu' (default='gpu')"
+    )
     args = parser.parse_args()
- 
+
     f = open(args.config_file)
-    
+
     contents = json.load(f)
 
     batch_size = int(contents["params"]["batch_size"])
@@ -187,8 +232,13 @@ if __name__ == '__main__':
 
     X, y, X_test, y_test = load_fashion_mnist_data(data_path)
 
-    X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.33, random_state=0)
-    
+    X_train, X_val, y_train, y_val = train_test_split(
+        X,
+        y,
+        test_size=0.33,
+        random_state=0
+    )
+
     torch.manual_seed(0)
     train_dataset = set_dataset(images=X, labels=y)
     train_dataloader = set_dataloader(train_dataset, batch_size, shuffle=True)
@@ -204,7 +254,14 @@ if __name__ == '__main__':
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
 
-    train_model(model=model, optimizer=optimizer, criterion=criterion, epochs=epochs, train_dataloader=train_dataloader, val_dataloader=val_dataloader)
+    train_model(
+        model=model,
+        optimizer=optimizer,
+        criterion=criterion,
+        epochs=epochs,
+        train_dataloader=train_dataloader,
+        val_dataloader=val_dataloader
+    )
 
     save_model(model_path)
 
@@ -213,7 +270,7 @@ if __name__ == '__main__':
 
     print("Testing")
     test_model(model=model_to_test, dataloader=test_dataloader)
-    calculate_accuracy_per_class(model=model_to_test, dataloader=test_dataloader)
-
-
-
+    calculate_accuracy_per_class(
+        model=model_to_test,
+        dataloader=test_dataloader
+    )
