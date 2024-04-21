@@ -12,7 +12,7 @@ import torch.optim as optim
 
 from dataset import CustomFashionMNISTDataset
 
-sys.path.append("/home/oralph/repos/fashion-mnist")
+sys.path.append("~/repos/fashion-mnist")
 
 from utils import mnist_reader
 
