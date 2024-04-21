@@ -1,5 +1,6 @@
 import argparse
 import json
+import os
 import torch
 import torchvision.transforms as transforms
 import sys
@@ -124,9 +125,9 @@ def train_model(
 
             # print statistics
             running_loss += loss.item()
-            if i % 100 == 99:    # print every 100 mini-batches
+            if i % 100 == 99:    # print every 100 batches
                 print(
-                    f'[{epoch + 1}, {i + 1:5d}] \
+                    f'[Epoch: {epoch + 1}, Batch: {i + 1:5d}] \
                       loss: {running_loss / 100:.3f}'
                 )
                 running_loss = 0.0
@@ -226,6 +227,8 @@ if __name__ == '__main__':
     model_architecture = args.model_architecture
     data_path = contents["paths"]["data_path"]
     model_path = contents["paths"]["model_path"]
+
+    os.makedirs(os.path.dirname(model_path), exist_ok=True)
 
     device = set_device(args.compute_type)
     print("device:", device)
