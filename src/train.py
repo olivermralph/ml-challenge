@@ -17,8 +17,8 @@ sys.path.append("/home/oralph/repos/fashion-mnist")
 
 from utils import mnist_reader
 
-CLASSES = ('T-shirt/top', 'Trouser', 'Pullover', 'Dress',
-           'Coat', 'Sandal', 'Shirt', 'Sneaker', 'Bag', 'Ankle Boot')
+CLASSES = ("T-shirt/top", "Trouser", "Pullover", "Dress",
+           "Coat", "Sandal", "Shirt", "Sneaker", "Bag", "Ankle Boot")
 
 MODEL_ARCHITECTURES = {
     "resnet18": resnet18(weights=None),
@@ -49,8 +49,8 @@ def set_device(device):
 
 
 def load_fashion_mnist_data(data_path):
-    X, y = mnist_reader.load_mnist(data_path, kind='train')
-    X_test, y_test = mnist_reader.load_mnist(data_path, kind='t10k')
+    X, y = mnist_reader.load_mnist(data_path, kind="train")
+    X_test, y_test = mnist_reader.load_mnist(data_path, kind="t10k")
 
     X_copy, y_copy = X.copy(), y.copy()
     X_test_copy, y_test_copy = X_test.copy(), y_test.copy()
@@ -127,8 +127,8 @@ def train_model(
             running_loss += loss.item()
             if i % 100 == 99:    # print every 100 batches
                 print(
-                    f'[Epoch: {epoch + 1}, Batch: {i + 1:5d}] \
-                      loss: {running_loss / 100:.3f}'
+                    f"[Epoch: {epoch + 1}, Batch: {i + 1:3d}]\
+                      loss: {running_loss / 100:.3f}"
                 )
                 running_loss = 0.0
 
@@ -136,7 +136,7 @@ def train_model(
         test_model(model, val_dataloader)
         calculate_accuracy_per_class(model, val_dataloader)
 
-    print('Finished Training')
+    print("Finished Training")
 
 
 def save_model(model_path):
@@ -162,8 +162,8 @@ def test_model(model, dataloader):
             correct += (predicted == labels).sum().item()
 
     print(
-        f'Accuracy of the network on the dataset: \
-          {100 * correct // total} %'
+        f"Accuracy of the network on the dataset: \
+          {100 * correct // total} %"
     )
 
 
@@ -190,10 +190,10 @@ def calculate_accuracy_per_class(model, dataloader):
     # print accuracy for each class
     for classname, correct_count in correct_pred.items():
         accuracy = 100 * float(correct_count) / total_pred[classname]
-        print(f'Accuracy for class: {classname:5s} is {accuracy:.1f} %')
+        print(f"Accuracy for class: {classname:5s} is {accuracy:.1f} %")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Parser for model architecture \
             and config file for remaining arguments"
