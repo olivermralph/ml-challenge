@@ -127,8 +127,7 @@ def train_model(
             running_loss += loss.item()
             if i % 100 == 99:    # print every 100 batches
                 print(
-                    f"[Epoch: {epoch + 1}, Batch: {i + 1:3d}]\
-                      loss: {running_loss / 100:.3f}"
+                    f"[epoch: {epoch + 1}, batch: {i + 1:3d}], loss: {running_loss / 100:.3f}"
                 )
                 running_loss = 0.0
 
@@ -162,8 +161,7 @@ def test_model(model, dataloader):
             correct += (predicted == labels).sum().item()
 
     print(
-        f"Accuracy of the network on the dataset: \
-          {100 * correct // total} %"
+        f"Accuracy of the network on the dataset: {100 * correct // total} %"
     )
 
 
