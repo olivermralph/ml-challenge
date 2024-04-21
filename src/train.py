@@ -44,7 +44,11 @@ def set_device(device):
 def load_fashion_mnist_data(data_path):
     X, y = mnist_reader.load_mnist(data_path, kind='train')
     X_test, y_test = mnist_reader.load_mnist(data_path, kind='t10k')
-    return X, y, X_test, y_test
+
+    X_copy, y_copy = X.copy(), y.copy()
+    X_test_copy, y_test_copy = X_test.copy(), y_test.copy()
+
+    return X_copy, y_copy, X_test_copy, y_test_copy
 
 
 def set_dataset(images, labels):
@@ -90,7 +94,7 @@ def train_model(model, optimizer, criterion, epochs, train_dataloader, val_datal
 
             # print statistics
             running_loss += loss.item()
-            if i % 100 == 99:    # print every 2000 mini-batches
+            if i % 100 == 99:    # print every 100 mini-batches
                 print(f'[{epoch + 1}, {i + 1:5d}] loss: {running_loss / 100:.3f}')
                 running_loss = 0.0
 
