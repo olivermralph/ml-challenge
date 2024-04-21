@@ -3,9 +3,18 @@ import json
 import torch
 import torchvision
 import torchvision.transforms as transforms
+import sys
+
+from sklearn.model_selection import train_test_split
 from torchvision.models import resnet18, resnet34, resnet50
 from torch import nn
 import torch.optim as optim
+
+from dataset import CustomFashionMNISTDataset
+
+sys.path.append("/home/oralph/repos/fashion-mnist")
+
+from utils import mnist_reader
 
 CLASSES = ('T-shirt/top', 'Trouser', 'Pullover', 'Dress',
            'Coat', 'Sandal', 'Shirt', 'Sneaker', 'Bag', 'Ankle Boot')
@@ -15,6 +24,12 @@ MODEL_ARCHITECTURES = {
     "resnet34": resnet34(weights=None),
     "resnet50": resnet50(weights=None)
 }
+
+IMAGE_SHAPE = (28, 28)
+
+TRANSFORM = transforms.Compose(
+                [transforms.ToTensor(),
+                transforms.Normalize((0.5), (0.5))])
 
 COMPUTE_TYPES = {
     "gpu": "cuda:0",
@@ -26,21 +41,23 @@ def set_device(device):
     return torch.device(COMPUTE_TYPES[device] if torch.cuda.is_available() else COMPUTE_TYPES["cpu"])
 
 
-def get_transform():
-    return transforms.Compose(
-                [transforms.ToTensor(),
-                transforms.Normalize((0.5), (0.5))])
+def load_fashion_mnist_data(data_path):
+    X, y = mnist_reader.load_mnist(data_path, kind='train')
+    X_test, y_test = mnist_reader.load_mnist(data_path, kind='t10k')
+
+    X_copy, y_copy = X.copy(), y.copy()
+    X_test_copy, y_test_copy = X_test.copy(), y_test.copy()
+
+    return X_copy, y_copy, X_test_copy, y_test_copy
 
 
-def set_dataset(data_path, train, download):
-    transform = get_transform()
-    return torchvision.datasets.FashionMNIST(root=data_path, train=train,
-                                        download=download, transform=transform)
+def set_dataset(images, labels):
+    return CustomFashionMNISTDataset(images=images, labels=labels, image_shape=IMAGE_SHAPE, image_transform=TRANSFORM)
     
 
-def set_dataloader(dataset, batch_size, shuffle, num_workers, drop_last):
-    return torch.utils.data.DataLoader(dataset=dataset, batch_size=batch_size, 
-                                          shuffle=shuffle, num_workers=num_workers, drop_last=drop_last)
+def set_dataloader(dataset, batch_size, shuffle):
+    return torch.utils.data.DataLoader(dataset=dataset, batch_size=batch_size, shuffle=shuffle)
+
 
 def set_model(model_architecture):
     model = MODEL_ARCHITECTURES[model_architecture].to(device)
@@ -53,11 +70,16 @@ def set_model(model_architecture):
 
     return model
 
-def train_model(epochs):
+
+def train_model(model, optimizer, criterion, epochs, train_dataloader, val_dataloader):
     for epoch in range(epochs):  # loop over the dataset multiple times
 
+        # begin training
+        print(f"Training - Epoch {epoch + 1}")
+        model.train()
+
         running_loss = 0.0
-        for i, data in enumerate(trainloader, 0):
+        for i, data in enumerate(train_dataloader, 0):
             # get the inputs; data is a list of [inputs, labels]
             inputs, labels = data[0].to(device), data[1].to(device)
 
@@ -72,9 +94,13 @@ def train_model(epochs):
 
             # print statistics
             running_loss += loss.item()
-            if i % 100 == 99:    # print every 2000 mini-batches
+            if i % 100 == 99:    # print every 100 mini-batches
                 print(f'[{epoch + 1}, {i + 1:5d}] loss: {running_loss / 100:.3f}')
                 running_loss = 0.0
+
+        print(f"Validation - Epoch {epoch + 1}")
+        test_model(model, val_dataloader)
+        calculate_accuracy_per_class(model, val_dataloader)
 
     print('Finished Training')
 
@@ -83,32 +109,39 @@ def save_model(model_path):
     torch.save(model.state_dict(), model_path)
 
 
-def test_model():
+def test_model(model, dataloader):
+    # begin model evaluation
+    model.eval()
+
     correct = 0
     total = 0
     # since we're not training, we don't need to calculate the gradients for our outputs
     with torch.no_grad():
-        for data in testloader:
+        for data in dataloader:
             images, labels = data[0].to(device), data[1].to(device)
             # calculate outputs by running images through the network
-            outputs = model_to_test(images)
+            outputs = model(images)
             # the class with the highest energy is what we choose as prediction
             _, predicted = torch.max(outputs.data, 1)
             total += labels.size(0)
             correct += (predicted == labels).sum().item()
+    
+    print(f'Accuracy of the network on the dataset: {100 * correct // total} %')
 
-    print(f'Accuracy of the network on the 10000 test images: {100 * correct // total} %')
 
-def calculate_accuracy_per_class():
+def calculate_accuracy_per_class(model, dataloader):
+    # begin model evaluation
+    model.eval()
+    
     # prepare to count predictions for each class
     correct_pred = {classname: 0 for classname in CLASSES}
     total_pred = {classname: 0 for classname in CLASSES}
 
     # again no gradients needed
     with torch.no_grad():
-        for data in testloader:
+        for data in dataloader:
             images, labels = data[0].to(device), data[1].to(device)
-            outputs = model_to_test(images)
+            outputs = model(images)
             _, predictions = torch.max(outputs, 1)
             # collect the correct predictions for each class
             for label, prediction in zip(labels, predictions):
@@ -121,6 +154,7 @@ def calculate_accuracy_per_class():
     for classname, correct_count in correct_pred.items():
         accuracy = 100 * float(correct_count) / total_pred[classname]
         print(f'Accuracy for class: {classname:5s} is {accuracy:.1f} %')
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Parser for model architecture and config file for remaining arguments")
@@ -150,30 +184,36 @@ if __name__ == '__main__':
 
     device = set_device(args.compute_type)
     print("device:", device)
+
+    X, y, X_test, y_test = load_fashion_mnist_data(data_path)
+
+    X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.33, random_state=0)
     
     torch.manual_seed(0)
-    trainset = set_dataset(data_path, train=True, download=True)
-    trainloader = set_dataloader(trainset, batch_size, 
-                                            shuffle=True, num_workers=2, drop_last=True)
+    train_dataset = set_dataset(images=X, labels=y)
+    train_dataloader = set_dataloader(train_dataset, batch_size, shuffle=True)
 
-    testset = set_dataset(data_path, train=False, download=True)
-    testloader = set_dataloader(testset, batch_size,
-                                            shuffle=False, num_workers=2, drop_last=True)
+    val_dataset = set_dataset(images=X_val, labels=y_val)
+    val_dataloader = set_dataloader(val_dataset, batch_size, shuffle=False)
+
+    test_dataset = set_dataset(images=X_test, labels=y_test)
+    test_dataloader = set_dataloader(test_dataset, batch_size, shuffle=False)
 
     model = set_model(model_architecture)
 
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
 
-    train_model(epochs)
+    train_model(model=model, optimizer=optimizer, criterion=criterion, epochs=epochs, train_dataloader=train_dataloader, val_dataloader=val_dataloader)
 
     save_model(model_path)
 
     model_to_test = set_model(model_architecture)
     model_to_test.load_state_dict(torch.load(model_path))
 
-    test_model()
-    calculate_accuracy_per_class()
+    print("Testing")
+    test_model(model=model_to_test, dataloader=test_dataloader)
+    calculate_accuracy_per_class(model=model_to_test, dataloader=test_dataloader)
 
 
 

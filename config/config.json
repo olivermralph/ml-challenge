@@ -1,12 +1,11 @@
 {
     "params":{
         "batch_size": 128,
-        "epochs": 2,
-        "model_architecture": "resnet18"
+        "epochs": 2
     },
     "paths":
     {
-        "data_path": "./data",
+        "data_path": "/home/oralph/repos/fashion-mnist/data/fashion",
         "model_path": "./fashion_mnist_model.pth"
     }
 }
