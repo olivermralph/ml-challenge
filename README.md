@@ -70,7 +70,7 @@ You will need a python environment using the requirements file that can be found
 `"environments/ml_venv/requirements.txt"`.
 Instructions on how to create a python virtual environment can be found here:  
 https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/  
-Or alternatively install these libraries on a clean python/conda environment if you can't use venv dependencies file.
+Or alternatively install these libraries on a clean python/conda environment if you can't use the requirements file.
 
 You will then need to clone the following repository to access the Fashion-MNIST dataset:  
 https://github.com/zalandoresearch/fashion-mnist  
