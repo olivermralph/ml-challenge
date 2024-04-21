@@ -4,11 +4,11 @@ The repository that contains the fashion-mnist dataset required to run this code
 The MIT License (MIT) Copyright © 2017 Zalando SE, https://tech.zalando.com
 
 ## About
-This code is used to train a model to classify grayscale images from the Fashion-MNIST dataset with an accuracy of 86% on the 10000 test images.
+This code is used to train a model to classify grayscale images from the Fashion-MNIST dataset with an accuracy of 86% on the 10000 test images. The train/val dataset split is `0.33` (train dataset: 40200 images, validation dataset: 19800 images). This parameter is not currently configurable.
 
 Here is an example of the output of a model being trained from the python script `train.py`:  
 `"batch_size": 128`  
-`"epochs": 10`  
+`"epochs": 2`  
 `"model_architecture": "resnet34"`  
 `"compute_type": "gpu"`  
 
