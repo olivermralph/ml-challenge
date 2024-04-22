@@ -12,7 +12,7 @@ Here is an example of the output of a model being trained from the python script
 `"model_architecture": "resnet34"`  
 `"compute_type": "gpu"`  
 
-`The printout is as follows:`   
+The printout is as follows:  
 `device: cuda:0`  
 `Training - Epoch 1`  
 `[epoch: 1, batch: 100], loss: 0.964`  
