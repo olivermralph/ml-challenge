@@ -95,7 +95,8 @@ There is a config file called `config.json` under the `config` folder which cont
 An example of the config file looks like this:
 
 `{`  
-`    "params":{`  
+`    "params":`  
+`    {`  
 `        "batch_size": 128,`  
 `        "epochs": 2`  
 `    },`  
