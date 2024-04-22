@@ -79,7 +79,15 @@ The local repository location should be adjacent to this repository, but is not 
 In order to access the data from the cloned repo, you need to make sure that the path that is appended to the system (cell 4 in model_train.ipynb and line 15 in train.py) is that of the fashion-mnist repo location,  
 e.g. `'/home/<user>/repos/fashion-mnist'`
 
-### Arguments
+### Running the Notebook
+
+To run the notebook `notebooks/model_train.ipynb`, you will need to set up a kernel with the environment created earlier, this can be done using the following command:
+
+`ipython kernel install --user --name=<kernel_name>`
+
+The name of the kernel can be different to the evironment name, but it makes sense to keep them the same.
+
+### Running the Python Script
 
 There is a config file called `config.json` under the `config` folder which contain parameters for running training and also paths to the data and output model locations. You will need to call this in the run command when you run the training script `src/train.py`.
 
