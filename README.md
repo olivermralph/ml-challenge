@@ -15,52 +15,52 @@ Here is an example of the output of a model being trained from the python script
 `The printout is as follows:`   
 `device: cuda:0`  
 `Training - Epoch 1`  
-`[1,   100] loss: 0.948`  
-`[1,   200] loss: 0.520`  
-`[1,   300] loss: 0.470`  
-`[1,   400] loss: 0.430`  
+`[epoch: 1, batch: 100], loss: 0.964`  
+`[epoch: 1, batch: 200], loss: 0.519`  
+`[epoch: 1, batch: 300], loss: 0.473`  
+`[epoch: 1, batch: 400], loss: 0.425`  
 `Validation - Epoch 1`  
 `Accuracy of the network on the dataset: 87 %`  
-`Accuracy for class: T-shirt/top is 84.4 %`  
+`Accuracy for class: T-shirt/top is 87.6 %`  
 `Accuracy for class: Trouser is 96.6 %`  
-`Accuracy for class: Pullover is 76.6 %`  
-`Accuracy for class: Dress is 89.6 %`  
-`Accuracy for class: Coat  is 83.6 %`  
-`Accuracy for class: Sandal is 93.5 %`  
-`Accuracy for class: Shirt is 64.0 %`  
-`Accuracy for class: Sneaker is 90.0 %`  
-`Accuracy for class: Bag   is 97.8 %`  
+`Accuracy for class: Pullover is 75.5 %`  
+`Accuracy for class: Dress is 91.4 %`  
+`Accuracy for class: Coat  is 82.9 %`  
+`Accuracy for class: Sandal is 94.4 %`  
+`Accuracy for class: Shirt is 57.4 %`  
+`Accuracy for class: Sneaker is 91.4 %`  
+`Accuracy for class: Bag   is 98.0 %`  
 `Accuracy for class: Ankle Boot is 97.0 %`  
 `Training - Epoch 2`  
-`[2,   100] loss: 0.357`  
-`[2,   200] loss: 0.341`  
-`[2,   300] loss: 0.341`  
-`[2,   400] loss: 0.341`  
+`[epoch: 2, batch: 100], loss: 0.356`  
+`[epoch: 2, batch: 200], loss: 0.344`  
+`[epoch: 2, batch: 300], loss: 0.344`  
+`[epoch: 2, batch: 400], loss: 0.338`  
 `Validation - Epoch 2`  
 `Accuracy of the network on the dataset: 89 %`  
-`Accuracy for class: T-shirt/top is 86.8 %`  
-`Accuracy for class: Trouser is 97.7 %`  
+`Accuracy for class: T-shirt/top is 85.8 %`  
+`Accuracy for class: Trouser is 97.8 %`  
 `Accuracy for class: Pullover is 80.1 %`  
-`Accuracy for class: Dress is 88.3 %`  
-`Accuracy for class: Coat  is 93.4 %`  
-`Accuracy for class: Sandal is 98.0 %`  
-`Accuracy for class: Shirt is 65.3 %`  
-`Accuracy for class: Sneaker is 94.8 %`  
-`Accuracy for class: Bag   is 98.2 %`  
-`Accuracy for class: Ankle Boot is 96.3 %`  
+`Accuracy for class: Dress is 87.4 %`  
+`Accuracy for class: Coat  is 92.7 %`  
+`Accuracy for class: Sandal is 98.3 %`  
+`Accuracy for class: Shirt is 66.5 %`  
+`Accuracy for class: Sneaker is 94.7 %`  
+`Accuracy for class: Bag   is 97.7 %`  
+`Accuracy for class: Ankle Boot is 96.4 %`  
 `Finished Training`  
 `Testing`  
 `Accuracy of the network on the dataset: 86 %`  
-`Accuracy for class: T-shirt/top is 83.7 %`  
-`Accuracy for class: Trouser is 97.0 %`  
-`Accuracy for class: Pullover is 74.1 %`  
-`Accuracy for class: Dress is 83.7 %`  
-`Accuracy for class: Coat  is 88.7 %`  
-`Accuracy for class: Sandal is 96.5 %`  
-`Accuracy for class: Shirt is 55.2 %`  
-`Accuracy for class: Sneaker is 94.2 %`  
-`Accuracy for class: Bag   is 96.9 %`  
-`Accuracy for class: Ankle Boot is 94.4 %`  
+`Accuracy for class: T-shirt/top is 82.1 %`  
+`Accuracy for class: Trouser is 96.5 %`  
+`Accuracy for class: Pullover is 73.3 %`  
+`Accuracy for class: Dress is 85.2 %`  
+`Accuracy for class: Coat  is 89.0 %`  
+`Accuracy for class: Sandal is 96.7 %`  
+`Accuracy for class: Shirt is 56.7 %`  
+`Accuracy for class: Sneaker is 94.6 %`  
+`Accuracy for class: Bag   is 95.5 %`  
+`Accuracy for class: Ankle Boot is 96.0 %`  
 
 The test class accuracy is not always the same and could be due to the shuffling of the training dataset but could also just be the non-determinsm of the model.
 
