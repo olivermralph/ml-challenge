@@ -1,5 +1,6 @@
 {
-    "params":{
+    "params":
+    {
         "batch_size": 128,
         "epochs": 2
     },
