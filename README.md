@@ -85,7 +85,8 @@ To run the notebook `notebooks/model_train.ipynb`, you will need to set up a ker
 
 `ipython kernel install --user --name=<kernel_name>`
 
-The name of the kernel can be different to the evironment name, but it makes sense to keep them the same.
+The name of the kernel can be different to the evironment name, but it makes sense to keep them the same.  
+You will then be able to select the kernel in your chosen IDE.
 
 ### Running the Python Script
 
